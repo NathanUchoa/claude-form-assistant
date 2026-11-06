@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Claude Assistant</title>
+  <style>
+    :root {
+      --bg-primary: #121417;
+      --bg-secondary: #1a1d24;
+      --bg-card: #222630;
+      --border-color: #2e3440;
+      --text-main: #e5e9f0;
+      --text-muted: #8c96a6;
+      --accent-coral: #d97757;
+      --accent-coral-hover: #c46445;
+      --accent-green: #22c55e;
+      --accent-green-hover: #16a34a;
+      --accent-green-light: rgba(34, 197, 94, 0.12);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-title span { color: var(--accent-coral); }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 12px;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    input[type="password"], select {
+      width: 100%;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 9px 12px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    input[type="password"]:focus, select:focus {
+      border-color: var(--accent-coral);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 11px 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-secondary);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover { background-color: #252a35; }
+
+    .btn-primary {
+      background-color: var(--accent-coral);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover { background-color: var(--accent-coral-hover); }
+
+    .btn-success {
+      background-color: var(--accent-green);
+      color: #ffffff;
+    }
+
+    .btn-success:hover { background-color: var(--accent-green-hover); }
+
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .status-banner {
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      display: none;
+    }
+
+    .status-banner.success {
+      display: block;
+      background-color: var(--accent-green-light);
+      color: var(--accent-green);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .status-banner.error {
+      display: block;
+      background-color: rgba(239, 68, 68, 0.12);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .answer-display {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-green);
+      border-radius: 6px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .answer-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .answer-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-green);
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-title">
+      <span>✦</span> Claude Assistant
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Configurações</div>
+    
+    <div class="input-group">
+      <label for="apiKeyInput">Anthropic API Key</label>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." />
+    </div>
+
+    <div class="input-group">
+      <label for="modelSelect">Modelo de IA &amp; Custo</label>
+      <select id="modelSelect">
+        <option value="claude-3-5-sonnet-latest">🟢 Sonnet 3.5 ($) — Equilibrado &amp; Recomendado</option>
+        <option value="claude-3-5-haiku-latest">⚡ Haiku 3.5 (¢) — Ultra Rápido &amp; Barato</option>
+        <option value="claude-opus-5-5">🔥 Opus 5.5 ($$$) — Máxima Precisão</option>
+      </select>
+    </div>
+
+    <button id="saveSettingsBtn" class="btn btn-secondary">Guardar Configurações</button>
+  </div>
+
+  <button id="analyzeBtn" class="btn btn-primary">⚡ Analisar Página / Quiz</button>
+
+  <div id="statusBanner" class="status-banner"></div>
+
+  <div id="resultCard" class="card" style="display: none;">
+    <div class="card-title">Resposta Identificada</div>
+    
+    <div class="answer-display">
+      <span class="answer-label">Opção Recomendada</span>
+      <span id="userFriendlyAnswer" class="answer-value">--</span>
+    </div>
+
+    <button id="applyBtn" class="btn btn-success">✨ Destacar / Preencher na Página</button>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>
