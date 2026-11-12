@@ -42,7 +42,7 @@ No canto superior direito da página, ative a opção Modo do desenvolvedor (Dev
 Carregue a extensão:
 Clique no botão Carregar sem compactação (Load unpacked) e selecione a pasta raiz deste projeto.
 
-**##💡 Como Utilizar**
+**💡 Como Utilizar**
 Abra o Side Panel da extensão no Chrome.
 
 **Insira a sua Anthropic API Key** (obtenha em console.anthropic.com) e escolha o modelo desejado. Clique em Guardar Configurações.
